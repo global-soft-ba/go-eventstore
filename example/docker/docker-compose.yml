@@ -1,0 +1,30 @@
+services:
+  example-app:
+    container_name: example-app
+    build:
+      context: ../../
+      dockerfile: example/docker/Dockerfile
+    ports:
+      - "8080:8080"
+      - "2345:2345"
+    restart: unless-stopped
+    depends_on:
+      - example-db
+    volumes:
+      - ..:/event/example
+  example-db:
+    container_name: example-db
+    build:
+      context: .
+      dockerfile: ./postgresql/Dockerfile
+    environment:
+      - POSTGRES_USER=example
+      - POSTGRES_PASSWORD=example
+    ports:
+      - "5432:5432"
+    volumes:
+      - example-app-pg-data:/var/lib/postgresql/data
+
+volumes:
+  example-app-pg-data:
+    driver: local
