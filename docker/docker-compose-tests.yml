@@ -1,0 +1,18 @@
+version: '3.8'
+services:
+  db-integration-tests:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    restart: on-failure
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=docker
+      - POSTGRES_DB=eventstore_testing
+    ports:
+      - '5433:5432'
+  redis-integration-tests:
+    image: redis:6.2-alpine
+    restart: on-failure
+    ports:
+      - '6379:6379'
