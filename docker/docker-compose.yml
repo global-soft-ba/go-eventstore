@@ -1,0 +1,28 @@
+version: '3.8'
+services:
+  db-integration-tests:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=docker
+      - POSTGRES_DB=eventstore_testing
+    ports:
+      - '5433:5432'
+    volumes:
+      - eventstore-db-integration-data:/var/lib/postgresql/data
+  redis-integration-tests:
+    image: redis:7.2-alpine
+    restart: always
+    ports:
+      - '6379:6379'
+    volumes:
+      - eventstore-redis-integration-data:/data
+
+volumes:
+  eventstore-db-integration-data:
+    driver: local
+  eventstore-redis-integration-data:
+    driver: local

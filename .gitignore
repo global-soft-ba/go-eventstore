@@ -1,0 +1,24 @@
+/template-cache/
+
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.e
+*.db
+
+# IDE/editor configs
+.idea
+.vscode
+.python-version
+
+# other
+*.DS_Store
+.docker-sync
+.netrc
+
+pub-sub-sa.json
+key.json
+
+coverage-*.out
+cover-*.html
+/vendor/
