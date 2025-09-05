@@ -1,0 +1,155 @@
+Community License Agreement (Bi-Temporal Event Store)
+
+Preamble
+Globalsoft b.a., Široki Brijeg, Bosnia and Herzegovina, (hereinafter referred to as
+"Licensor") provides the source code and binary versions of "Bi-Temporal Event
+Store" (hereinafter referred to as "Software") under the terms of this Community
+License Agreement. The purpose of this license is to enable use for development,
+testing, research, and internal purposes, while at the same time excluding the
+unauthorized commercial operation of "Bi-Temporal Event Store" as a service by third
+parties.
+
+1. Grant of License
+  1.1 The Licensor grants the Licensee a worldwide, simple (non-exclusive), non-
+  transferable and – subject to Section 1.1(c) – non-sublicensable right to use the
+  Software, including the source code, which is revocable in the event of violations
+  pursuant to Section 2. This right of use exists exclusively in accordance with this
+  Agreement and includes, to the extent necessary for the intended use:
+      (a) installing, loading, executing, and operating the software in the Licensee's IT
+      environment, including in cloud accounts controlled by the Licensee (without
+      provision to third parties);
+      (b) the reproductions technically necessary for operation, security, and restarting
+      (including appropriate backup copies);
+      (c) use by employees, freelancers, and other vicarious agents of the Licensee and—
+      if affiliated companies under uniform management within the meaning of Article 32 of
+      the Law on Business Entities in the Federation of BiH are involved—by them,
+      provided that the licensee remains fully responsible for their contractual use;
+      (d) the creation and use of its own modifications and forks in accordance with Section
+      3 exclusively for the purposes permitted in this Agreement;
+      (e) Reservation of rights: All rights not expressly granted remain with the licensor.
+  1.2 Permitted uses (in particular):
+      - Use for development, testing, and internal business purposes;
+      - Integration into own software products;
+      - On-premises deployment in unlimited numbers;
+      - Use by non-profit organizations, educational institutions, and for research purposes.
+
+2. Restrictions
+  2.1 Any use beyond the scope described in sections 1 and 1.2 is prohibited. In
+  particular, but not limited to, the following is prohibited:
+      (a) the provision of the software or derivative works as "EventStore-as-a-Service" or
+      in a comparable form, in which third parties are granted access via the Internet or
+      other networks, either for a fee or free of charge;
+      (b) managed hosting or offering of the software by cloud providers (e.g., AWS, GCP,
+      Azure) or comparable infrastructure providers, insofar as these enable operation as
+      a service for third parties;
+      (c) reselling, leasing, or otherwise transferring the software as a standalone product
+      for a fee without the prior written consent of the licensor;
+      (d) use for the provision of commercial SaaS services, consulting or integration
+      services that are in direct competition with the cloud or enterprise services offered by
+      the licensor;
+      (e) any action that is likely to circumvent the licensor's technical protection measures
+      or undermine the license terms.
+  2.2 Volume limitation: Free use of the software under this license is limited to an
+  annual data volume of no more than 50 million events or use by a maximum of
+  100,000 end users, whichever threshold is reached first. "Event" within the meaning
+  of this provision is any persisted event unit stored in the database within the scope of
+  event sourcing. "End users" are natural persons who directly or indirectly access the
+  data generated or managed by the software via a software application. If either of
+  these thresholds is exceeded, the purchase of a separate commercial license is
+  mandatory. Any use beyond these limits without the appropriate license constitutes a
+  breach of contract and entitles the licensor to immediately revoke the rights of use
+  and assert claims for damages.
+
+3. Source code
+  3.1 The licensee is entitled to view, reproduce, technically analyze, and modify or
+  extend the source code of the software for their own purposes. These rights exist
+  exclusively within the scope of the uses expressly permitted in this agreement.
+  3.2 Publications or distributions of modifications, forks, or derivative works are only
+  permitted if they do not violate the restrictions in Section 2 and do not constitute use
+  as a service, cloud offering, or independent commercial product. Any public provision
+  must be made while retaining the licensor's copyright and license notices.
+  3.3 The licensee may use and further develop its own extensions internally. External
+  disclosure is only permitted in a non-commercial context for research, teaching, or
+  open-source collaborations, provided that no third-party rights are infringed and the
+  provisions of this agreement are strictly adhered to.
+  3.4 The licensor reserves the exclusive right to use the "Bi-Temporal Event Store"
+  trademark in connection with official versions and publications. Modified versions may
+  not be distributed under this trademark or under names that could be confused with
+  it. The licensee must ensure that it is made clear that this is an unofficial, modified
+  version.
+  3.5 Any use of the source code or derivative works that exceeds the rights expressly
+  granted in this agreement requires the prior written consent of the Licensor and may
+  require a separate commercial license.
+
+4. Warranty and Liability
+  4.1 The software is provided to the licensee free of charge and in its current form ("as
+  is"). No express or implied warranty is given, in particular for the absence of errors,
+  specific functionalities, or suitability for a particular purpose. Mandatory legal
+  provisions, in particular consumer protection regulations, remain unaffected if they
+  stipulate otherwise.
+  4.2 The Licensor shall only be liable for intent and gross negligence as well as for
+  injury to life, limb, or health. In the event of a slightly negligent breach of a material
+  contractual obligation (cardinal obligation), liability shall be limited to the foreseeable
+  damage typical for this type of contract. Any further liability is excluded.
+  4.3 Liability for indirect damage, consequential damage or loss of profit is excluded,
+  unless the Licensor has caused this intentionally or through gross negligence.
+  4.4 The above limitations of liability also apply in favor of the Licensor's legal
+  representatives, employees, and other vicarious agents. They cover all contractual,
+  non-contractual, and statutory claims of the Licensee.
+  4.5 Mandatory claims under the Product Liability Act remain unaffected.
+
+5. Data protection
+  5.1 The Community Edition is provided exclusively as on-premises software. The
+  Licensor does not collect, store, or process any personal data of the Licensee within
+  the scope of this license.
+  5.2 If the Licensee processes personal data with the software, they are solely
+  responsible for compliance with the relevant data protection laws, in particular the
+  General Data Protection Regulation (GDPR). The Licensor assumes no responsibility
+  or liability for this.
+  5.3 The Licensee shall ensure that all necessary technical and organizational
+  measures for the protection of personal data are complied with insofar as it processes
+  such data with the software.
+
+6. Trademarks and copyrights
+  6.1 All rights, titles, and legal claims to the software, including all copies,
+  modifications, and derivative works, remain with the Licensor, unless expressly stated
+  otherwise in this Agreement.
+  6.2 The name, logo, and trademark "Bi-Temporal Event Store" are protected
+  trademarks of the Licensor. These may only be used by the Licensee in direct
+  connection with the permitted use of the software and not in a manner that creates
+  the impression of an official connection or support by the Licensor.
+  6.3 The Licensee undertakes to retain all copyright notices, trademark labels, or other
+  references to the Licensor's property rights in the software and associated
+  documentation unchanged.
+
+7. Term and termination of the agreement
+  7.1 This license is valid indefinitely, provided that the licensee complies with the terms
+  of this agreement.
+  7.2 The Licensor is entitled to terminate this license without notice and to revoke the
+  Licensee's rights if the Licensee violates essential provisions, in particular the
+  restrictions under Section 2.
+  7.3 In the event of termination of the license, the licensee must immediately cease
+  use of the software, delete all copies, and, at the licensor's request, provide proof of
+  their destruction.
+  7.4 Rights to claim damages and injunctive relief remain unaffected by termination.
+
+8. Final provisions
+  8.1 The law of Bosnia and Herzegovina shall apply exclusively, excluding the UN
+  Convention on Contracts for the International Sale of Goods (CISG).
+  8.2 Bosnia and Herzegovina shall be the exclusive place of jurisdiction for all disputes
+  arising from or in connection with this contract, provided that the licensee is a
+  merchant, a legal entity under public law or a special fund under public law. However,
+  the licensor shall also be entitled to bring claims against the licensee at the licensee's
+  general place of jurisdiction.
+  8.3 Amendments and supplements to this contract must be made in writing. This also
+  applies to any amendment to this written form requirement.
+  8.4 Should any provision of this contract be or become invalid or unenforceable in
+  whole or in part, this shall not affect the validity of the remaining provisions. The
+  parties undertake to replace the invalid or unenforceable provision with a valid and
+  enforceable provision that comes as close as possible to the economic intent. The
+  same applies to any contractual loopholes.
+  8.5 Insofar as further agreements between the parties exist in addition to this contract,
+  the provisions of this contract shall take precedence in case of doubt, unless
+  expressly agreed otherwise.
+
+As of: September 2025

@@ -1,0 +1,17 @@
+version: '3.8'
+services:
+  db-benchmark-tests:
+    image: event-test-postgres-db
+    container_name: db-eventstore-load-test
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=docker
+      - POSTGRES_DB=eventstore_benchmark
+    ports:
+      - '5434:5432'
+    volumes:
+      - eventstore-benchmark-data:/var/lib/postgresql/data
+volumes:
+  eventstore-benchmark-data:
+    driver: local

@@ -1,0 +1,617 @@
+definitions:
+  event.DTO:
+    properties:
+      aggregateID:
+        type: string
+      aggregateType:
+        type: string
+      editedBy:
+        type: string
+      eventID:
+        type: string
+      field:
+        type: string
+      scheduledAt:
+        type: string
+      validFrom:
+        type: string
+      valueChange:
+        items:
+          type: integer
+        type: array
+    type: object
+  example_core_port_service_item.DTO:
+    properties:
+      itemID:
+        type: string
+      itemName:
+        type: string
+      tenantID:
+        type: string
+    type: object
+  item.CreateDTO:
+    properties:
+      itemID:
+        type: string
+      itemName:
+        type: string
+    type: object
+  item.RenameDTO:
+    properties:
+      name:
+        type: string
+    type: object
+  projection.StateResponseDTO:
+    properties:
+      executionTimeOut:
+        type: string
+      finishingTimeOut:
+        type: string
+      hPatchStrategy:
+        type: string
+      inputQueueLength:
+        type: integer
+      preparationTimeOut:
+        type: string
+      projectionID:
+        type: string
+      projectionType:
+        type: string
+      rebuildExecutionTimeOut:
+        type: string
+      retryDurations:
+        items:
+          type: string
+        type: array
+      state:
+        type: string
+      tenantID:
+        type: string
+    type: object
+  response.ErrorResponse:
+    properties:
+      error:
+        type: string
+    type: object
+  response.PageDTO:
+    properties:
+      backward:
+        type: boolean
+      search:
+        type: string
+      size:
+        type: integer
+      sort:
+        type: string
+      values:
+        items: {}
+        type: array
+    type: object
+  rest.EventStreamResponse:
+    properties:
+      next:
+        $ref: '#/definitions/response.PageDTO'
+      patches:
+        items:
+          $ref: '#/definitions/event.DTO'
+        type: array
+      previous:
+        $ref: '#/definitions/response.PageDTO'
+      validTime:
+        example: "2024-01-03T00:00:00Z"
+        type: string
+    type: object
+  rest.ItemOverviewResponse:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/example_core_port_service_item.DTO'
+        type: array
+      next:
+        $ref: '#/definitions/response.PageDTO'
+      previous:
+        $ref: '#/definitions/response.PageDTO'
+    type: object
+info:
+  contact: {}
+paths:
+  /api/{tenantID}/events:
+    get:
+      consumes:
+      - application/json
+      description: Get all aggregate events (historical events and future patches)
+        with optional search, sorting and pagination. The search is case-insensitive
+        and has filter support via "@ColumnName:X". If no column is specified, all
+        possible search fields are searched. Sorting for multiple columns via "+ColumnName,-ColumnName2"
+        with +/- prefix to specify ascending/descending sort direction. The size parameter
+        specifies the maximum number of entries that will be returned. With the values
+        and direction parameters the start value of the page can be defined to achieve
+        pagination.
+      parameters:
+      - description: Tenant ID
+        in: path
+        name: tenantID
+        required: true
+        type: string
+      - description: Time (RFC3339)
+        example: '"2024-01-03T00:00:00Z"'
+        in: query
+        name: time
+        type: string
+      - default: '@AggregateType:Item'
+        description: 'Search Term - supported columns are: EventID/SearchAggregateEventID,
+          AggregateType/SearchAggregateType, AggregateID/SearchAggregateID, Version/SearchAggregateVersion,
+          EventType/SearchAggregateEventType, Class/SearchAggregateClass, ValidTime/SearchValidTime,
+          TransactionTime/SearchTransactionTime, Data/SearchData'
+        in: query
+        name: search
+        type: string
+      - default: -ValidTime
+        description: 'Sort Term - supported columns are: AggregateType/SortAggregateType,
+          AggregateID/SortAggregateID, Version/SortAggregateVersion, EventType/SortAggregateEventType,
+          Class/SortAggregateClass, ValidTime/SortValidTime, TransactionTime/SortTransactionTime'
+        in: query
+        name: sort
+        type: string
+      - default: 1000
+        description: Page Size - maximum 1000
+        in: query
+        name: size
+        type: integer
+      - collectionFormat: csv
+        description: Values of first row on page (only for pagination)
+        in: query
+        items:
+          type: string
+        name: values
+        type: array
+      - default: false
+        description: IsBackward (only for pagination)
+        in: query
+        name: direction
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 'Success: Found Events'
+          schema:
+            $ref: '#/definitions/rest.EventStreamResponse'
+        "400":
+          description: 'Error: Bad Request'
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: 'Error: Internal Server Error'
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      summary: Get aggregate events
+      tags:
+      - Event
+  /api/{tenantID}/events/{aggregateType}/{aggregateID}/{eventID}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete scheduled event of an aggregate
+      parameters:
+      - description: Tenant ID
+        in: path
+        name: tenantID
+        required: true
+        type: string
+      - description: Aggregate Type
+        example: '"Item"'
+        in: path
+        name: aggregateType
+        required: true
+        type: string
+      - description: Aggregate ID
+        in: path
+        name: aggregateID
+        required: true
+        type: string
+      - description: Event ID
+        in: path
+        name: eventID
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      summary: Delete scheduled event
+      tags:
+      - Event
+  /api/{tenantID}/items:
+    get:
+      consumes:
+      - application/json
+      description: Get all Items with optional search, sorting, and pagination. The
+        search is case-insensitive and has filter support via "@ColumnName:X". If
+        no column is specified, all possible search fields are searched. Sorting for
+        multiple columns via "+ColumnName,-ColumnName2" with +/- prefix to specify
+        ascending/descending sort direction. The size parameter specifies the maximum
+        number of entries that will be returned. With the values and direction parameters
+        the start value of the page can be defined to achieve pagination.
+      parameters:
+      - description: Tenant ID
+        in: path
+        name: tenantID
+        required: true
+        type: string
+      - default: '@ItemName:Item 1'
+        description: 'Search Term - supported columns are: ItemID, ItemName'
+        in: query
+        name: search
+        type: string
+      - default: -ItemName
+        description: 'Sort Term - supported columns are: ID, ItemID, ItemName'
+        in: query
+        name: sort
+        type: string
+      - default: 1000
+        description: Page Size - maximum 1000
+        in: query
+        name: size
+        type: integer
+      - collectionFormat: csv
+        description: Values of first row on page (only for pagination)
+        in: query
+        items:
+          type: string
+        name: values
+        type: array
+      - default: false
+        description: IsBackward (only for pagination)
+        in: query
+        name: direction
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 'Success: Found Items'
+          schema:
+            $ref: '#/definitions/rest.ItemOverviewResponse'
+        "400":
+          description: 'Error: Bad Request'
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: 'Error: Internal Server Error'
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      summary: Get Items
+      tags:
+      - Item
+    post:
+      consumes:
+      - application/json
+      description: Create a new item for a specific tenant
+      parameters:
+      - description: Tenant ID
+        in: path
+        name: tenantID
+        required: true
+        type: string
+      - description: Item Data
+        in: body
+        name: item
+        required: true
+        schema:
+          $ref: '#/definitions/item.CreateDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      summary: Create a new item
+      tags:
+      - Item
+  /api/{tenantID}/items/{itemID}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a specific item by its ID for a specific tenant
+      parameters:
+      - description: Tenant ID
+        in: path
+        name: tenantID
+        required: true
+        type: string
+      - description: Item ID
+        in: path
+        name: itemID
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "500":
+          description: 'Error: Internal Server Error'
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      summary: Delete an item
+      tags:
+      - Item
+    get:
+      consumes:
+      - application/json
+      description: Get a specific item by its ID for a specific tenant
+      parameters:
+      - description: Tenant ID
+        in: path
+        name: tenantID
+        required: true
+        type: string
+      - description: Item ID
+        in: path
+        name: itemID
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 'Success: Found Item'
+          schema:
+            $ref: '#/definitions/example_core_port_service_item.DTO'
+        "500":
+          description: 'Error: Internal Server Error'
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      summary: Get item by ID
+      tags:
+      - Item
+  /api/{tenantID}/items/{itemID}/rename:
+    patch:
+      consumes:
+      - application/json
+      description: Rename a specific item by its ID for a specific tenant
+      parameters:
+      - description: Tenant ID
+        in: path
+        name: tenantID
+        required: true
+        type: string
+      - description: Item ID
+        in: path
+        name: itemID
+        required: true
+        type: string
+      - default: "2000-01-01T00:00:00Z"
+        description: Valid Time
+        in: query
+        name: validTime
+        type: string
+      - description: Rename Data
+        in: body
+        name: renameDTO
+        required: true
+        schema:
+          $ref: '#/definitions/item.RenameDTO'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: 'Error: Bad Request'
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: 'Error: Internal Server Error'
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      summary: Rename an item
+      tags:
+      - Item
+  /api/{tenantID}/projections:
+    get:
+      consumes:
+      - application/json
+      description: Get the states of projections for a specific tenant
+      parameters:
+      - description: Tenant ID
+        in: path
+        name: tenantID
+        required: true
+        type: string
+      - collectionFormat: csv
+        description: Projection IDs
+        in: query
+        items:
+          enum:
+          - item
+          type: string
+        name: projections
+        required: true
+        type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/projection.StateResponseDTO'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      summary: Get projection states
+      tags:
+      - Projection
+  /api/{tenantID}/projections/{projectionID}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a projection by its ID for a specific tenant
+      parameters:
+      - description: Tenant ID
+        in: path
+        name: tenantID
+        required: true
+        type: string
+      - description: Projection ID
+        example: '"item"'
+        in: path
+        name: projectionID
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      summary: Delete a projection
+      tags:
+      - Projection
+  /api/{tenantID}/projections/rebuild:
+    post:
+      consumes:
+      - application/json
+      description: Rebuild specified projections for a tenant
+      parameters:
+      - description: Tenant ID
+        in: path
+        name: tenantID
+        required: true
+        type: string
+      - collectionFormat: csv
+        description: Projections
+        in: query
+        items:
+          enum:
+          - item
+          type: string
+        name: projections
+        required: true
+        type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      summary: Rebuild projections
+      tags:
+      - Projection
+  /api/{tenantID}/projections/start:
+    post:
+      consumes:
+      - application/json
+      description: Start specified projections for a tenant
+      parameters:
+      - description: Tenant ID
+        in: path
+        name: tenantID
+        required: true
+        type: string
+      - collectionFormat: csv
+        description: Projections
+        in: query
+        items:
+          enum:
+          - item
+          type: string
+        name: projections
+        required: true
+        type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      summary: Start projections
+      tags:
+      - Projection
+  /api/{tenantID}/projections/stop:
+    post:
+      consumes:
+      - application/json
+      description: Stop specified projections for a tenant
+      parameters:
+      - description: Tenant ID
+        in: path
+        name: tenantID
+        required: true
+        type: string
+      - collectionFormat: csv
+        description: Projections
+        in: query
+        items:
+          enum:
+          - item
+          type: string
+        name: projections
+        required: true
+        type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      summary: Stop projections
+      tags:
+      - Projection
+  /api/{tenantID}/seeders/items:
+    post:
+      consumes:
+      - application/json
+      description: Seed a specific number of items for a tenant
+      parameters:
+      - description: Tenant ID
+        in: path
+        name: tenantID
+        required: true
+        type: string
+      - default: 1000
+        description: Number of items to seed
+        in: query
+        name: count
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      summary: Seed items
+      tags:
+      - Seeder
+swagger: "2.0"
